@@ -1,0 +1,15 @@
+# .github/workflows/ci.yml
+jobs:
+  container_scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Scan image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: "your-docker-image:latest"
+          exit-code: "1"  # Fail on vulnerabilities
+          severity: "HIGH,CRITICAL"
+          format: "table"

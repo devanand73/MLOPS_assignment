@@ -1,0 +1,26 @@
+# File: .github/workflows/ci.yml
+name: Feature Pipeline CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: my-feature-pipeline:latest
+      credentials:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+    steps:
+      - name: Run tests
+        run: pytest tests/
+        
+  build-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          tags: my-feature-pipeline:latest
+          push: true

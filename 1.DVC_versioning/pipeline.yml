@@ -1,0 +1,30 @@
+# .github/workflows/pipeline.yml
+name: MLOps Pipeline
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  data-versioning:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true  # For DVC
+
+      - name: Setup DVC
+        uses: iterative/setup-dvc@v1
+
+      - name: Pull Data
+        run: dvc pull -r s3-storage
+
+      - name: Run Pipeline
+        run: dvc repro
+
+      - name: Track Changes
+        run: |
+          dvc status
+          if [ -n "$(dvc status --cloud)" ]; then
+            dvc push
+          fi

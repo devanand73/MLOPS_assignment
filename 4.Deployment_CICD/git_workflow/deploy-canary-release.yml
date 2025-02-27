@@ -1,0 +1,28 @@
+name: Deploy Canary Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Kubernetes
+        uses: azure/setup-kubectl@v1
+        with:
+          version: 'v1.20.0'
+
+      - name: Deploy Canary
+        run: |
+          kubectl apply -f k8s/canary-deployment.yaml
+          kubectl apply -f k8s/service.yaml
+
+      - name: Monitor Canary Deployment
+        run: |
+          kubectl rollout status deployment/my-app-canary

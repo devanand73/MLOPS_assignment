@@ -1,0 +1,13 @@
+# .github/workflows/deploy.yml
+permissions:
+  id-token: write  # Required for OIDC
+  contents: read
+
+jobs:
+  deploy:
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::1234567890:role/github-actions-role
+          aws-region: us-east-1

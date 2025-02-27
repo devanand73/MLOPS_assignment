@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: feature-pipeline
+spec:
+  schedule: "0 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: feature-pipeline
+            image: my-feature-pipeline:latest
+            args: ["--hourly-run"]
+          restartPolicy: OnFailure

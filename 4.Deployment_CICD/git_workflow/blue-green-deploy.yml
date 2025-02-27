@@ -1,0 +1,32 @@
+name: Deploy Blue/Green Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Kubernetes
+        uses: azure/setup-kubectl@v1
+        with:
+          version: 'v1.20.0'
+
+      - name: Deploy Green
+        run: |
+          kubectl apply -f k8s/green-deployment.yaml
+          kubectl apply -f k8s/service.yaml
+
+      - name: Monitor Green Deployment
+        run: |
+          kubectl rollout status deployment/my-app-green
+
+      - name: Switch Traffic to Green
+        run: |
+          kubectl patch service my-app-service -p '{"spec":{"selector":{"version":"green"}}}'
