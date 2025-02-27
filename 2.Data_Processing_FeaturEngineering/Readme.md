@@ -21,12 +21,12 @@ Converts raw logs/clickstream data into ML features through:
 - **CI/CD Integration** (GitHub Actions)
 - **Version Control** (DVC + MLflow)
 - **Automated Testing** (pytest)
-- **Cloud-Native** (S3/GCS compatible)
+- **Cloud-Native** (S3/AWS compatible)
 
 ## 🛠 Requirements
 - Python 3.9+
 - Docker 20.10+
-- AWS/GCP account (for cloud storage)
+- AWS account (for cloud storage)
 - Git + DVC (for version control)
 
 ## 🚀 Quick Start
